@@ -1,10 +1,12 @@
 import React from 'react';
 import people from '../store/people';
 import {observer} from 'mobx-react-lite';
+import mode from '../store/mode';
 
 const DetailsWorkman = observer( (props) => {
   return (
     <div>
+        <button onClick={()=> mode.setMode("Table", null)}>Назад</button>
         <div>
             <span>Фамилия</span>
             <span>{props.el.Surname}</span>
