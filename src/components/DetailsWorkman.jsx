@@ -47,10 +47,24 @@ const DetailsWorkman = observer( (props) => {
             <span>Коллеги</span>
             <span>
                 {
-                    props.el.Colleagues.map(el => {
-                        <span>{el}</span>
-                    })}
+                    props.el.Colleagues.filter(elf => elf.Status).map((el, ind) => {
+                        return (
+                            <div key={ind}>{el.Name}</div>
+                        )
+                    })
+                }
             </span>
+        </div>
+        <div>
+            <div>Дополнительные атрибуты</div>
+                {props.el.OtherAttributes.map((el, ind) => {
+                    return (
+                        <div key={ind}>
+                            <span>{el.Name}</span>
+                            <span>{el.Value}</span>
+                        </div>
+                    )
+                })}
         </div>
     </div>
   );
