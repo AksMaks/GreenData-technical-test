@@ -5,13 +5,6 @@ import mode from '../store/mode';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button, Table} from 'react-bootstrap';
 
-const style = {
-    table: {
-        minWidth: "700px",
-        overflowX: "hidden"
-    }
-}
-
 const DetailsWorkman = observer( (props) => {
   return (
     <div  style={{minWidth: "350px"}} className={"container w-50 mt-2"}>

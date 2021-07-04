@@ -30,7 +30,6 @@ class Mode {
     setMode(newMode, newWorkman){
         this.mode = newMode
         this.workman = newWorkman
-        console.log("setMode")
     }
     //Сохраниение нового работника
     setWorkman(newWorkman){
@@ -44,7 +43,6 @@ class Mode {
         currentColleagues.forEach(el => {
             this.workman.Colleagues[el].Status = true
         });
-        console.log(this.workman.Colleagues)
         //this.workman.Colleagues[ind].Status = !this.workman.Colleagues[ind].Status
     }
     //добавление нового атрибута

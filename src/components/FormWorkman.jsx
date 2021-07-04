@@ -30,7 +30,6 @@ const FormWorkman = observer((props) => {
                 <Form.Group>
                     <Form.Label>Должность</Form.Label>
                     <Form.Control as="select" required value={mode.workman.Position} onChange={(e) => mode.setWorkman({...mode.workman, Position: e.target.value})}>
-                        <option disabled>Выберите должность</option>
                         <option value="ГСБ">ГСБ</option>
                         <option value="ХОП">ХОП</option>
                         <option value="Клоун">Клоун</option>
@@ -38,7 +37,27 @@ const FormWorkman = observer((props) => {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Дата рождения</Form.Label>
-                    <Form.Control type={"date"} required value={mode.workman.DateBirth} onChange={(e) => mode.setWorkman({...mode.workman, DateBirth: e.target.value})}/>
+                    <Form.Control 
+                        type={"date"} 
+                        required 
+                        value={mode.workman.DateBirth} 
+                        onChange={(e) => {
+                            let now = new Date()
+                            let DateBirth = new Date(e.target.value)
+                            let EmploymentDate = new Date(mode.workman.EmploymentDate)
+                            let DateOfDismissal = new Date(mode.workman.DateOfDismissal)
+                            if(DateBirth.getTime() < now.getTime()){
+                                mode.setWorkman({...mode.workman, DateBirth: e.target.value})
+                            }else{
+                                mode.setWorkman({...mode.workman, DateBirth: (now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2))})
+                            }
+                            if(EmploymentDate.getTime() < DateBirth.getTime()){
+                                mode.setWorkman({...mode.workman, EmploymentDate: e.target.value})
+                            }
+                            if(DateOfDismissal.getTime() < DateBirth.getTime()){
+                                mode.setWorkman({...mode.workman, DateOfDismissal: e.target.value})
+                            }
+                        }}/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Дата приема на работу</Form.Label>
@@ -47,11 +66,16 @@ const FormWorkman = observer((props) => {
                         value={mode.workman.EmploymentDate} 
                         required 
                         onChange={(e) => {
+                            let DateBirth = new Date(mode.workman.DateBirth)
                             let EmploymentDate = new Date(e.target.value)
                             let DateOfDismissal = new Date(mode.workman.DateOfDismissal)
-                            if(EmploymentDate.getTime() < DateOfDismissal.getTime()){
+                            if(DateBirth.getTime() < EmploymentDate.getTime() < DateOfDismissal.getTime()){
                                 mode.setWorkman({...mode.workman, EmploymentDate: e.target.value})
-                            }else{
+                            }
+                            if(EmploymentDate.getTime() < DateBirth.getTime()){
+                                mode.setWorkman({...mode.workman, EmploymentDate: mode.workman.DateBirth})
+                            }
+                            if(EmploymentDate.getTime() > DateOfDismissal.getTime()){
                                 mode.setWorkman({...mode.workman, EmploymentDate: mode.workman.DateOfDismissal})
                             }
                         }}/>
@@ -66,7 +90,6 @@ const FormWorkman = observer((props) => {
                             (e) => {
                                 let EmploymentDate = new Date(mode.workman.EmploymentDate)
                                 let DateOfDismissal = new Date(e.target.value)
-                                console.log(EmploymentDate.getTime() < DateOfDismissal.getTime())
                                 if(EmploymentDate.getTime() < DateOfDismissal.getTime()){
                                     mode.setWorkman({...mode.workman, DateOfDismissal: e.target.value})
                                 }else{
@@ -82,7 +105,7 @@ const FormWorkman = observer((props) => {
                     <Form.Control as="select" multiple onChange={e => mode.changeColleagues([...e.target.options].filter(option => option.selected).map(x => x.value))}>
                         {mode.workman.Colleagues.map((el, ind) => {
                             return (
-                                <option key={ind} value={ind} selected={el.Status}>{el.Name}</option>
+                                <option key={ind} value={ind} selected={(el.Status)? "selected": null }>{el.Name}</option>
                             )
                         })}
                     </Form.Control>
