@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-
+import api from "../api/localStorage.js";
 class People {
     countId = 2
     workmans =  [
@@ -9,7 +9,14 @@ class People {
     constructor(){
         makeAutoObservable(this)
     }
+    getWorkmans(){
+        //return this.workmans
+        return api.getPeople()
+        
+    }
     addWorkman(newWorkman){
+        api.addWorkman(newWorkman)
+        /*
         this.countId++
         
         newWorkman.Colleagues.forEach(el => {
@@ -19,8 +26,11 @@ class People {
         });
         this.workmans.push({...newWorkman, Id: this.countId})
         console.log(this.workmans)
+        */
     }
     changeWorkman(changeWorkman){
+        api.changeWorman(changeWorkman)
+        /*
         this.Colleagues = this.Colleagues.filter(el => el.Id1 !== changeWorkman.Id && el.Id2 !== changeWorkman.Id)
       
         changeWorkman.Colleagues.forEach(el => {
@@ -36,13 +46,18 @@ class People {
                 return changeWorkman
             }
         })
-        console.log(this.workmans)
+        */
     }
     removeWorkman(IdWorkman){
+        api.removeWorkman(IdWorkman)
+        /*
         this.workmans = this.workmans.filter(el => el.Id !== IdWorkman)
         this.Colleagues = this.Colleagues.filter(el => el.Id1 !== IdWorkman && el.Id2 !== IdWorkman)
+        */
     }
     getCurrentWorkmanColleagues (IdWorkman){
+        return api.getWorkmanColleagues(IdWorkman)
+        /*
         let temp = this.workmans.filter(elf => elf.Id != IdWorkman).map(el => {
             return {
                 Id: el.Id,
@@ -53,6 +68,7 @@ class People {
         console.log(this.Colleagues.map(el => el))
         console.log(temp)
         return temp;
+        */
     }
 }
 

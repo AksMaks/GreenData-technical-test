@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import people from '../store/people';
 import {observer} from 'mobx-react-lite';
 import mode from '../store/mode';
 
 const FormWorkman = observer((props) => {
     const handleSubmit = (event) => {
-        console.log(event)
         props.action(mode.workman)
+        mode.setMode("Table", null)
         event.preventDefault();
     }
     return(

@@ -1,5 +1,4 @@
 import React from 'react';
-import people from '../store/people';
 import {observer} from 'mobx-react-lite';
 import mode from '../store/mode';
 

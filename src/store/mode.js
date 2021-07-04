@@ -26,17 +26,21 @@ class Mode {
     constructor(){
         makeAutoObservable(this)
     }
+    //Уствновка новых значение для перехода
     setMode(newMode, newWorkman){
         this.mode = newMode
         this.workman = newWorkman
         console.log("setMode")
     }
+    //Сохраниение нового работника
     setWorkman(newWorkman){
         this.workman = newWorkman
     }
+    //изменение коллег по индексу
     changeColleagues(ind){
         this.workman.Colleagues[ind].Status = !this.workman.Colleagues[ind].Status
     }
+    //добавление нового атрибута
     addOtherAttribute(){
         this.workman.OtherAttributes.push({
             Name: "",
@@ -44,6 +48,7 @@ class Mode {
             Value: ""
         })
     }
+    //Сохраниение нового атрибута
     setOtherAttribute(ind, newAttribute){
         if(newAttribute.Type != this.workman.OtherAttributes[ind].Type){
             if(newAttribute.Type == "text") newAttribute.Value = ""
@@ -53,6 +58,7 @@ class Mode {
         }
         this.workman.OtherAttributes[ind] = newAttribute
     }
+    //Удаление атрибута
     removeOtherAttribute(ind){
         this.workman.OtherAttributes.splice(ind, 1)
     }
