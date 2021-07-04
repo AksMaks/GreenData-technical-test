@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import mode from '../store/mode';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Form, Button, Table} from 'react-bootstrap';
+
 const FormWorkman = observer((props) => {
     const handleSubmit = (event) => {
         props.action(mode.workman)
@@ -9,36 +12,36 @@ const FormWorkman = observer((props) => {
         event.preventDefault();
     }
     return(
-        <div>
-            <button onClick={()=> mode.setMode("Table", null)}>Назад</button>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <span>Фамилия</span>
-                    <input type={"text"} required value={mode.workman.Surname} onChange={(e) => mode.setWorkman({...mode.workman, Surname: e.target.value})}/>
-                </div>
-                <div>
-                    <span>Имя</span>
-                    <input type={"text"} required value={mode.workman.Name} onChange={(e) => mode.setWorkman({...mode.workman, Name: e.target.value})}/>
-                </div>
-                <div>
-                    <span>Отчество</span>
-                    <input type={"text"} value={mode.workman.MiddleName} onChange={(e) => mode.setWorkman({...mode.workman, MiddleName: e.target.value})}/>
-                </div>
-                <div>
-                        <span>Должность</span>
-                        <select required value={mode.workman.Position} onChange={(e) => mode.setWorkman({...mode.workman, Position: e.target.value})}>
-                            <option value="ГСБ">ГСБ</option>
-                            <option value="ХОП">ХОП</option>
-                            <option value="Клоун">Клоун</option>
-                        </select>
-                    </div>
-                <div>
-                    <span>Дата рождения</span>
-                    <input type={"date"} required value={mode.workman.DateBirth} onChange={(e) => mode.setWorkman({...mode.workman, DateBirth: e.target.value})}/>
-                </div>
-                <div>
-                    <span>Дата приема на работу</span>
-                    <input 
+        <div style={{minWidth: "350px"}} className={"container w-50 mt-2"}>
+            <Button style={{width: "100px"}} className={"mb-2"} onClick={()=> mode.setMode("Table", null)}>Назад</Button>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                    <Form.Label>Фамилия</Form.Label>
+                    <Form.Control type="text" placeholder="Фамилия" required value={mode.workman.Surname} onChange={(e) => mode.setWorkman({...mode.workman, Surname: e.target.value})}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Имя</Form.Label>
+                    <Form.Control type="text" placeholder="Имя" required value={mode.workman.Name} onChange={(e) => mode.setWorkman({...mode.workman, Name: e.target.value})}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Отчество</Form.Label>
+                    <Form.Control type="text" placeholder="Отчество" required value={mode.workman.MiddleName} onChange={(e) => mode.setWorkman({...mode.workman, MiddleName: e.target.value})}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Должность</Form.Label>
+                    <Form.Control as="select" required value={mode.workman.Position} onChange={(e) => mode.setWorkman({...mode.workman, Position: e.target.value})}>
+                        <option value="ГСБ">ГСБ</option>
+                        <option value="ХОП">ХОП</option>
+                        <option value="Клоун">Клоун</option>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Дата рождения</Form.Label>
+                    <Form.Control type={"date"} required value={mode.workman.DateBirth} onChange={(e) => mode.setWorkman({...mode.workman, DateBirth: e.target.value})}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Дата приема на работу</Form.Label>
+                    <Form.Control 
                         type={"date"} 
                         value={mode.workman.EmploymentDate} 
                         required 
@@ -51,10 +54,10 @@ const FormWorkman = observer((props) => {
                                 mode.setWorkman({...mode.workman, EmploymentDate: mode.workman.DateOfDismissal})
                             }
                         }}/>
-                </div>
-                <div>
-                    <span>Дата увольнения</span>
-                    <input 
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Дата увольнения</Form.Label>
+                    <Form.Control 
                         type={"date"} 
                         value={mode.workman.DateOfDismissal} 
                         required 
@@ -69,82 +72,77 @@ const FormWorkman = observer((props) => {
                                     mode.setWorkman({...mode.workman, DateOfDismissal: mode.workman.EmploymentDate})
                                 }
                             }}/>
-                </div>
-                <div>
-                    <span>Наличие прав</span>
-                    <input type={"checkbox"} checked={!!mode.workman.DriverLicense} onChange={(e) => mode.setWorkman({...mode.workman, DriverLicense: !mode.workman.DriverLicense})}/>
-                </div>
-                <div>
-                    <span>Коллеги</span>
-                    {
-                        mode.workman.Colleagues.map((el, ind) => {
+                </Form.Group>
+                <Form.Group controlId="DriverLicense">
+                    <Form.Check type="checkbox" label="Наличие прав" checked={!!mode.workman.DriverLicense} onChange={(e) => mode.setWorkman({...mode.workman, DriverLicense: !mode.workman.DriverLicense})}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Коллеги</Form.Label>
+                    <Form.Control as="select" multiple onChange={e => mode.changeColleagues([...e.target.options].filter(option => option.selected).map(x => x.value))}>
+                        {mode.workman.Colleagues.map((el, ind) => {
                             return (
-                                <label key={ind}>
-                                    <input 
-                                        type="checkbox" 
-                                        checked={!!el.Status} 
-                                        onChange={(e) => mode.changeColleagues(ind)}/>       
-                                    <span>{el.Name}</span>
-                                </label>
+                                <option key={ind} value={ind}>{el.Name}</option>
                             )
-                            
-                        })
+                        })}
+                    </Form.Control>
+                </Form.Group>
+                <div>
+                    <div>
+                        <Form.Label>Дополнительные атрибуты</Form.Label>
+                    </div>
+                    {!!mode.workman.OtherAttributes.length &&
+                    <Table className={"table"} style={{overflowX: "auto"}}>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Имя
+                                </th>
+                                <th>
+                                    Тип
+                                </th>
+                                <th>
+                                    Значание
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {mode.workman.OtherAttributes.map((el, ind) => {
+                            return(
+                                <tr key={`OA${ind}`} >
+                                    <td>
+                                        <Form.Control 
+                                            type={"text"}
+                                            value={el.Name}
+                                            style={{width: "100%", minWidth: "100px"}}
+                                            onChange={(e) => mode.setOtherAttribute(ind, {...el, Name: e.target.value})}/>
+                                    </td>
+                                    <td>
+                                        <Form.Control style={{width: "100%", minWidth: "100px"}} as="select" value={el.Type} onChange={(e) => mode.setOtherAttribute(ind, {...el, Type: e.target.value})}>
+                                            <option value="text">Text</option>
+                                            <option value="number">Num</option>
+                                            <option value="date">Date</option>
+                                        </Form.Control>
+                                    </td>
+                                    <td>
+                                        <Form.Control style={{width: "100%", minWidth: "100px"}} type={el.Type} value={el.Value} onChange={(e) => mode.setOtherAttribute(ind, {...el, Value: e.target.value})}/>
+                                    </td>
+                                    <td >
+                                        <Button className="float-right" style={{width: "100px"}} onClick={() => mode.removeOtherAttribute(ind)}>Удалить</Button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </Table>
                     }
+                    <Button onClick={() => mode.addOtherAttribute()}>Добавить атрибут</Button>
                 </div>
                 <div>
-                    {mode.workman.OtherAttributes.map((el, ind) => {
-                        return(
-                            <div key={`OA${ind}`}>
-                                <div>
-                                    Наименование атрибута
-                                    <input 
-                                        type={"text"}
-                                        value={el.Name} 
-                                        onChange={(e) => mode.setOtherAttribute(ind, {...el, Name: e.target.value})}/>
-                                </div>
-                                <div>
-                                    Тип атрибута
-                                    <select value={el.Type} onChange={(e) => mode.setOtherAttribute(ind, {...el, Type: e.target.value})}>
-                                        <option value="text">Text</option>
-                                        <option value="number">Number</option>
-                                        <option value="date">Date</option>
-                                        <option value="bool">Bool</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    Значание атрибута
-                                    {(el.Type == "text" || el.Type == "number" || el.Type == "date") && <input type={el.Type} value={el.Value} onChange={(e) => mode.setOtherAttribute(ind, {...el, Value: e.target.value})}/>}
-                                    {(el.Type == "bool") && <input type={"checkbox"} checked={!!el.Value} onChange={(e) => mode.setOtherAttribute(ind, {...el, Value:!el.Value})}/>}
-                                </div>
-                                <div onClick={() => mode.removeOtherAttribute(ind)}>
-                                    Удалить атрибут
-                                </div>
-                            </div>
-                        )
-                    })}
-                    <div onClick={() => mode.addOtherAttribute()}>
-                        Добавить атрибут
-                    </div>
+                    <Button className="float-right mr-3 mt-2 mb-3" size="lg" type="submit" variant="primary">{props.text}</Button>
                 </div>
-                <button type="submit">{props.text}</button>
-            </form>
+            </Form>
         </div>
     )
 })
 
 export default FormWorkman;
-
-/*
-<div>
-                            <div>
-                                Наименование атрибута
-                                <input type={"text"} onChange={(e) => console.log(e)}/>
-                            </div>
-                            <select>
-                                <option value="text">Text</option>
-                                <option value="number">Number</option>
-                                <option value="date">Date</option>
-                                <option value="bool">Bool</option>
-                            </select>
-                        </div>
-                        */

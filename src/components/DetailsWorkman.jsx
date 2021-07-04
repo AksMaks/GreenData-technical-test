@@ -2,69 +2,85 @@ import React from 'react';
 import {observer} from 'mobx-react-lite';
 import mode from '../store/mode';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Form, Button, Table} from 'react-bootstrap';
+
+const style = {
+    table: {
+        minWidth: "700px",
+        overflowX: "hidden"
+    }
+}
+
 const DetailsWorkman = observer( (props) => {
   return (
-    <div>
-        <button onClick={()=> mode.setMode("Table", null)}>Назад</button>
-        <div>
-            <span>Фамилия</span>
-            <span>{props.el.Surname}</span>
-        </div>
-        <div>
-            <span>Имя</span>
-            <span>{props.el.Name}</span>
-        </div>
-        <div>
-            <span>Отчество</span>
-            <span>{props.el.MiddleName}</span>
-        </div>
-        <div>
-            <span>Должность</span>
-            <span>{props.el.Position}</span>
-        </div>
-        <div>
-            <span>Дата рождения</span>
-            <span>{props.el.DateBirth}</span>
-        </div>
-        <div>
-            <span>Пол</span>
-            <span>{props.el.Gender}</span>
-        </div>
-        <div>
-            <span>Дата приема на работу</span>
-            <span>{props.el.EmploymentDate}</span>
-        </div>
-        <div>
-            <span>Дата увольнения</span>
-            <span>{props.el.DateOfDismissal}</span>
-        </div>
-        <div>
-            <span>Наличие прав</span>
-            <span>{props.el.EmploymentDate? "Права есть": "Прав нет"}</span>
-        </div>
-        <div>
-            <span>Коллеги</span>
-            <span>
-                {
-                    props.el.Colleagues.filter(elf => elf.Status).map((el, ind) => {
-                        return (
-                            <div key={ind}>{el.Name}</div>
-                        )
-                    })
-                }
-            </span>
-        </div>
-        <div>
-            <div>Дополнительные атрибуты</div>
-                {props.el.OtherAttributes.map((el, ind) => {
+    <div  style={{minWidth: "350px"}} className={"container w-50 mt-2"}>
+        <Button style={{width: "100px"}} className={"mb-2"} onClick={()=> mode.setMode("Table", null)}>Назад</Button>
+        <Table size="sm"  style={{minWidth: "700px", overflowX: "hidden"}}>
+            <tbody>
+                <tr>
+                    <td>Фамилия</td>
+                    <td>{props.el.Surname}</td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td>{props.el.Name}</td>
+                </tr>
+                <tr>
+                    <td>Отчество</td>
+                    <td>{props.el.MiddleName}</td>
+                </tr>
+                <tr>
+                    <td>Должность</td>
+                    <td >{props.el.Position}</td>
+                </tr>
+                <tr>
+                    <td>Дата рождения</td>
+                    <td>{props.el.DateBirth}</td>
+                </tr>
+                <tr>
+                    <td>Пол</td>
+                    <td>{props.el.Gender}</td>
+                </tr>
+                <tr>
+                    <td>Дата приема на работу</td>
+                    <td>{props.el.EmploymentDate}</td>
+                </tr>
+                <tr>
+                    <td>Дата увольнения</td>
+                    <td>{props.el.DateOfDismissal}</td>
+                </tr>
+                <tr>
+                    <td>Наличие прав</td>
+                    <td>{props.el.DriverLicense? "Есть": "Нет"}</td>
+                </tr>
+                <tr>
+                    <td>Коллеги</td>
+                    <td>
+                        {
+                            props.el.Colleagues.filter(elf => elf.Status).map((el, ind) => {
+                                return (
+                                    <div key={ind}>{el.Name}</div>
+                                )
+                            })
+                        }
+                    </td>
+                </tr>
+                {!!props.el.OtherAttributes.length && props.el.OtherAttributes.map((el, ind) => {
                     return (
-                        <div key={ind}>
-                            <span>{el.Name}</span>
-                            <span>{el.Value}</span>
-                        </div>
+                        <tr key={ind}>
+                            <td>{el.Name}</td>
+                            <td>{el.Value}</td>
+                        </tr>
                     )
                 })}
-        </div>
+            </tbody>
+        </Table>
+        <style>{"\
+        td{\
+            width: 300px;\
+        }\
+      "}</style>
     </div>
   );
 })

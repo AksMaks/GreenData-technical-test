@@ -37,8 +37,15 @@ class Mode {
         this.workman = newWorkman
     }
     //изменение коллег по индексу
-    changeColleagues(ind){
-        this.workman.Colleagues[ind].Status = !this.workman.Colleagues[ind].Status
+    changeColleagues(currentColleagues){
+        this.workman.Colleagues.forEach(el => {
+            el.Status = false
+        })
+        currentColleagues.forEach(el => {
+            this.workman.Colleagues[el].Status = true
+        });
+        console.log(this.workman.Colleagues)
+        //this.workman.Colleagues[ind].Status = !this.workman.Colleagues[ind].Status
     }
     //добавление нового атрибута
     addOtherAttribute(){
@@ -54,7 +61,6 @@ class Mode {
             if(newAttribute.Type == "text") newAttribute.Value = ""
             if(newAttribute.Type == "number") newAttribute.Value = 0
             if(newAttribute.Type == "date") newAttribute.Value = "2021-01-01"
-            if(newAttribute.Type == "bool") newAttribute.Value = false
         }
         this.workman.OtherAttributes[ind] = newAttribute
     }
