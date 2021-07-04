@@ -30,6 +30,7 @@ const FormWorkman = observer((props) => {
                 <Form.Group>
                     <Form.Label>Должность</Form.Label>
                     <Form.Control as="select" required value={mode.workman.Position} onChange={(e) => mode.setWorkman({...mode.workman, Position: e.target.value})}>
+                        <option disabled>Выберите должность</option>
                         <option value="ГСБ">ГСБ</option>
                         <option value="ХОП">ХОП</option>
                         <option value="Клоун">Клоун</option>
@@ -81,7 +82,7 @@ const FormWorkman = observer((props) => {
                     <Form.Control as="select" multiple onChange={e => mode.changeColleagues([...e.target.options].filter(option => option.selected).map(x => x.value))}>
                         {mode.workman.Colleagues.map((el, ind) => {
                             return (
-                                <option key={ind} value={ind}>{el.Name}</option>
+                                <option key={ind} value={ind} selected={el.Status}>{el.Name}</option>
                             )
                         })}
                     </Form.Control>
