@@ -76,7 +76,7 @@ const FormWorkman = observer((props) => {
                                 mode.setWorkman({...mode.workman, EmploymentDate: mode.workman.DateBirth})
                             }
                             if(EmploymentDate.getTime() > DateOfDismissal.getTime()){
-                                mode.setWorkman({...mode.workman, EmploymentDate: mode.workman.DateOfDismissal})
+                                mode.setWorkman({...mode.workman, DateOfDismissal: e.target.value})
                             }
                         }}/>
                 </Form.Group>
